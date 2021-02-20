@@ -3,7 +3,7 @@ from discord.ext import commands
 
 from mcuuid.tools import is_valid_minecraft_username
 
-token = 'NzgxMzQ5ODkwOTQ0MjcwMzY2.X78Wyg.PMPukiusr4CBlnx5VHHTsR8VjkU'
+token = 'Insert Token Here'
 
 intents = discord.Intents(messages = True, guilds = True, reactions = True, members = True, presences = True)
 client = commands.Bot(command_prefix = '.', intents = intents)
