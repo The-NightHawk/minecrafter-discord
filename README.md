@@ -3,7 +3,10 @@
 
 
  Dependencies:
+
   discord.py
+
   mcuuid
+
   an internet connection
   
