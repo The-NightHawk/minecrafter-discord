@@ -1,9 +1,11 @@
+import os
+
 import discord
 from discord.ext import commands
 
 from mcuuid.tools import is_valid_minecraft_username
 
-token = 'Insert Token Here'
+token = os.environ['BOT_TOKEN']
 
 intents = discord.Intents(messages = True, guilds = True, reactions = True, members = True, presences = True)
 client = commands.Bot(command_prefix = '.', intents = intents)
