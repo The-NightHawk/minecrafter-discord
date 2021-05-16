@@ -15,7 +15,7 @@ skinModes = {
     'head': 'renders/head',
     'body': 'renders/body',
     'uv': 'skins',
-    'cape': 'cape',
+    'cape': 'capes',
     'avatar': 'avatars'
 }
 
