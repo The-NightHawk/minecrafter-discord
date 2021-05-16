@@ -1,12 +1,16 @@
-# minecraft-skins-discord-bot
- A Discord Bot that retrieves Minecraft skins using mcuuid and mc-heads.com
+## Minecraft Skins
+Minecraft Skins is a Discord Bot that can fetch Minecraft Skins for you.
+[Invite Link](https://discord.com/api/oauth2/authorize?client_id=781349890944270366&permissions=19456&scope=bot)
+## Commands
+**Prefix: `.`**
 
+**`.help`**
+Shows a help message.
 
- Dependencies:
+**`.skin <Username|UUID> [body|head|uv|cape|avatar]`**
+Sends an embed with the skin of the player.
 
-  discord.py
+e.g:
+`.skin TheNight`
+`.skin Honeydew uv`
 
-  mcuuid
-
-  an internet connection
-  
