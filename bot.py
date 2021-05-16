@@ -16,7 +16,7 @@ skinModes = {
     'body': 'renders/body',
     'uv': 'skins',
     'cape': 'cape',
-    'avatar': 'avatar'
+    'avatar': 'avatars'
 }
 
 async def getUUID(name):
