@@ -20,6 +20,8 @@ skinModes = {
 }
 
 async def getUUID(name):
+    if len(name) == 32 or len(name) == 35:
+        return name
     r = requests.get(f'https://api.mojang.com/users/profiles/minecraft/{name}')
     if r.status_code == 204:
         return None
