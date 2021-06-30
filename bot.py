@@ -18,7 +18,7 @@ skinModes = {
 class Player:
     def __init__(self, uuid:str, name:str):
         self.uuid = uuid
-        self.full_uuid = '-'.join()
+        self.full_uuid = '-'.join([uuid[0:8], uuid[8:12], uuid[12:16], uuid[16:20], uuid[20:]])
         self.name = name
 
     def getNameHistory(self):
@@ -32,7 +32,7 @@ class Player:
             for dictionary in data[1:][::-1]:
                 dt_object = datetime.fromtimestamp(int(dictionary['changedToAt'])/1000)
                 change_time = dt_object.strftime("%d-%m-%y")
-                name_history[dictionary['name']] = change_time
+                name_history[change_time] = dictionary['name']
 
             name_history[data[0]['name']] = 'Initial Name'
             self.name_history = name_history
@@ -45,7 +45,7 @@ class Player:
     
     def profile(self):
         name_history = self.getNameHistory()
-        embed = discord.Embed(title="Profile", description=f"UUID: `{self.uuid}`")
+        embed = discord.Embed(title="Profile", description=f"UUID: \n`{self.uuid}`\n`{self.full_uuid}`")
         embed.set_author(name=self.name, icon_url=self.skinURL('avatar'))
         embed.set_thumbnail(url=self.skinURL('body'))
         
@@ -60,6 +60,20 @@ class Player:
         embed.set_author(name=self.name, icon_url=self.skinURL('avatar'))
         embed.set_image(url=self.skinURL(subURL))
         return embed
+
+    def id(self):
+        embed = discord.Embed(title="UUID", description=f"`{self.uuid}`\n`{self.full_uuid}`")
+        embed.set_author(name=self.name, icon_url=self.skinURL('avatar'))
+        return embed
+
+    def history(self):
+        name_history = self.getNameHistory()
+        embed = discord.Embed(title="Name History")
+        embed.set_author(name=self.name, icon_url=self.skinURL('avatar'))
+        embed.add_field(name="\u200b", value='\n'.join([key for key,value in name_history.items()]), inline=True)
+        embed.add_field(name="\u200b", value='\n'.join([value for key,value in name_history.items()]), inline=True)
+        return embed
+
 
 @lru_cache(maxsize=128)
 def getPlayer(name_or_uuid: str):
@@ -122,7 +136,22 @@ async def skin(ctx, name_or_uuid: str, subURL: str = 'body'):
             await ctx.send(embed = player.skin(subURL))
 
 @client.command()
-async def uuid(ctx,)
+async def uuid(ctx, name_or_uuid: str):
+    with ctx.typing():
+        player = getPlayer(name_or_uuid)
+        if not player:
+            await ctx.send(embed = missingEmbed)
+        else:
+            await ctx.send(embed = player.id())
+
+@client.command()
+async def history(ctx, name_or_uuid: str):
+    with ctx.typing():
+        player = getPlayer(name_or_uuid)
+        if not player:
+            await ctx.send(embed = missingEmbed)
+        else:
+            await ctx.send(embed = player.history())
 
 @client.command()
 async def status(ctx):
