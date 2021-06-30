@@ -3,4 +3,3 @@ aiohttp>=3.6.0,<3.8.0
 async-timeout>=3.0.1
 requests>=2.25.1
 datetime>=4.3
-functools>=0.5
