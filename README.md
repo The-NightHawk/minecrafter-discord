@@ -39,3 +39,5 @@ Get the status of various Mojang websites.
 
 `.skin ec70bcaf702f4bb8b48d276fa52a780c head`
 
+## License
+[GNU General Public License, version 3 (GPLv3)](https://github.com/The-NightHawk/minecraft-skins-discord-bot/blob/main/LICENSE)
