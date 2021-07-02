@@ -45,4 +45,4 @@ Get the status of various Mojang websites.
 `.playerhead MumboJumbo`
 
 ## License
-(GNU General Public License, version 3 (GPLv3))[https://github.com/The-NightHawk/minecraft-skins-discord-bot/blob/main/LICENSE]
+[GNU General Public License, version 3 (GPLv3)](https://github.com/The-NightHawk/minecraft-skins-discord-bot/blob/main/LICENSE)
