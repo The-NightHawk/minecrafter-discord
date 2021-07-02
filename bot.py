@@ -130,6 +130,7 @@ async def help(ctx):
     embed.add_field(name="\u200b", value="\u200b", inline=False)
     embed.add_field(name="**`.uuid <username|UUID>`**", value="Get the UUID of a player.", inline=True)
     embed.add_field(name="**`.history <username|UUID>`**", value="Get the name history of a player.", inline=True)
+    embed.add_field(name="**`.playerhead <username|UUID>`**", value="Get the head of a player as a Minecraft item", inline=True)
     embed.add_field(name="\u200b", value="\u200b", inline=False)
     embed.add_field(name="**`.ping`**", value="Get the bot's latency.", inline=True)
     embed.add_field(name="**`.status`**", value="Get the Mojang API status.", inline=True)

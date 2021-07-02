@@ -21,6 +21,9 @@ Sends an embed with the UUID of the player.
 **`.history <Username|UUID>`**
 Sends an embed with the Name History of the player.
 
+**`.playerhead <username|UUID>`**
+Get the head of a player as a Minecraft item.
+
 ## Miscellaneous Commands
 **`.ping`**
 Get the client latency.
@@ -39,3 +42,7 @@ Get the status of various Mojang websites.
 
 `.skin ec70bcaf702f4bb8b48d276fa52a780c head`
 
+`.playerhead MumboJumbo`
+
+## License
+(GNU General Public License, version 3 (GPLv3))[https://github.com/The-NightHawk/minecraft-skins-discord-bot/blob/main/LICENSE]
