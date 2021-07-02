@@ -5,6 +5,8 @@ from datetime import datetime
 
 import discord
 from discord.ext import commands
+from discord_slash import SlashCommand, SlashContext
+from discord_slash.utils.manage_commands import create_option, create_choice
 import requests
 
 skinModes = {
@@ -76,9 +78,9 @@ class Player:
 
 
 @lru_cache(maxsize=128)
-def getPlayer(name_or_uuid: str):
-    if len(name_or_uuid) == 32 or len(name_or_uuid) == 35:
-        uuid = name_or_uuid
+def getPlayer(player: str):
+    if len(player) == 32 or len(player) == 35:
+        uuid = player
         request = requests.get(f"https://api.mojang.com/user/profiles/{uuid}/names")
 
         if request.status_code != 200:
@@ -88,7 +90,7 @@ def getPlayer(name_or_uuid: str):
             player = Player(uuid, name)
 
     else:
-        name = name_or_uuid
+        name = player
         request = requests.get(f"https://api.mojang.com/users/profiles/minecraft/{name}")
         if request.status_code != 200:
             return None
@@ -103,56 +105,149 @@ token = os.environ['BOT_TOKEN']
 
 intents = discord.Intents(messages = True, guilds = True, reactions = True, members = True, presences = True)
 client = commands.AutoShardedBot(command_prefix = '.', intents = intents)
+slash = SlashCommand(client, sync_commands=True)
+
+guild_ids = [781112622820622357]
 
 missingEmbed = discord.Embed(title="Player Not Found", color=0xd50101)
 missingEmbed.set_author(name="Error")
 
 client.remove_command('help')
+
+@slash.slash(name = "help", 
+            description = "Get some help!", 
+            options = [], 
+            guild_ids = guild_ids
+            )
 @client.command()
 async def help(ctx):
-    embed=discord.Embed(title="Help", description="Minecraft Skins is a bot which can show you a specific player's data.")
-    embed.add_field(name=".skin <username/UUID> [body|head|uv|cape|avatar]", value="Get the skin of a player", inline=True)
-    embed.add_field(name=".profile", value="Get the profile of a player.", inline=True)
-    embed.add_field(name=".help", value="Shows this command", inline=True)
+    embed=discord.Embed(title="Help", description="Minecrafter is a bot which can show you a player's Profile, Skin, UUID, or Name History!")
+    embed.add_field(name="**`.profile <username|UUID>`**", value="Get the profile of the player. This includes skin, name history, and UUID.", inline=True)
+    embed.add_field(name="**`.skin <username|UUID> [body|head|uv|cape|avatar]`**", value="Get the skin of a player. You can choose from their head, body, avatar, cape, or skin texture.", inline=True)
+    embed.add_field(name="\u200b", value="\u200b", inline=False)
+    embed.add_field(name="**`.uuid <username|UUID>`**", value="Get the UUID of a player.", inline=True)
+    embed.add_field(name="**`.history <username|UUID>`**", value="Get the name history of a player.", inline=True)
+    embed.add_field(name="\u200b", value="\u200b", inline=False)
+    embed.add_field(name="**`.ping`**", value="Get the bot's latency.", inline=True)
+    embed.add_field(name="**`.status`**", value="Get the Mojang API status.", inline=True)
+    embed.add_field(name="**`.invite`**", value="Get the bot's invite link!", inline=True)
     embed.set_footer(text="A bot by TheNightHawk#5516")
     await ctx.send(embed=embed)
 
+@slash.slash(name="profile", 
+            description="Get the profile of a player", 
+            options = [
+                create_option(
+                    name = "player",
+                    description = "The Name or UUID of the player",
+                    option_type= 3,
+                    required = True
+                )
+            ], 
+            guild_ids = guild_ids
+            )
 @client.command()
-async def profile(ctx, name_or_uuid:str):
-    with ctx.typing():
-        player = getPlayer(name_or_uuid)
+async def profile(ctx, player:str):
+    player = getPlayer(player)
+    if not player:
+        await ctx.send(embed = missingEmbed)
+    else:
+        await ctx.send(embed = player.profile())
+
+@slash.slash(name="skin", 
+            description="Get the skin of a player", 
+            options = [
+                create_option(
+                    name = "player",
+                    description = "The Name or UUID of the player",
+                    option_type= 3,
+                    required = True
+                ), 
+                create_option(
+                    name = "skin_type", 
+                    description = "The type of player skin to get.",
+                    option_type = 3,
+                    required = False,
+                    choices = [
+                        create_choice(
+                            name="body", 
+                            value = "head"
+                        ), 
+                        create_choice(
+                            name="body", 
+                            value = "body"
+                        ), 
+                        create_choice(
+                            name="uv", 
+                            value = "uv"
+                        ), 
+                        create_choice(
+                            name="cape", 
+                            value = "cape"
+                        ), 
+                        create_choice(
+                            name="avatar", 
+                            value = "avatar"
+                        )
+                    ]
+                )
+            ], 
+            guild_ids = guild_ids
+            )
+@client.command()
+async def skin(ctx, player: str, skin_type: str = 'body'):
+        player = getPlayer(player)
         if not player:
             await ctx.send(embed = missingEmbed)
         else:
-            await ctx.send(embed = player.profile())
+            await ctx.send(embed = player.skin(skin_type))
 
+@slash.slash(name="uuid", 
+            description="Get the uuid of a player", 
+            options = [
+                create_option(
+                    name = "player",
+                    description = "The Name or UUID of the player",
+                    option_type= 3,
+                    required = True
+                )
+            ], 
+            guild_ids = guild_ids
+            )
 @client.command()
-async def skin(ctx, name_or_uuid: str, subURL: str = 'body'):
-    with ctx.typing():
-        player = getPlayer(name_or_uuid)
-        if not player:
-            await ctx.send(embed = missingEmbed)
-        else:
-            await ctx.send(embed = player.skin(subURL))
-
-@client.command()
-async def uuid(ctx, name_or_uuid: str):
-    with ctx.typing():
-        player = getPlayer(name_or_uuid)
+async def uuid(ctx, player: str):
+        player = getPlayer(player)
         if not player:
             await ctx.send(embed = missingEmbed)
         else:
             await ctx.send(embed = player.id())
 
+
+@slash.slash(name="history", 
+            description="Get the name history of a player", 
+            options = [
+                create_option(
+                    name = "player",
+                    description = "The Name or UUID of the player",
+                    option_type= 3,
+                    required = True
+                )
+            ], 
+            guild_ids = guild_ids
+            )
 @client.command()
-async def history(ctx, name_or_uuid: str):
-    with ctx.typing():
-        player = getPlayer(name_or_uuid)
+async def history(ctx, player: str):
+        player = getPlayer(player)
         if not player:
             await ctx.send(embed = missingEmbed)
         else:
             await ctx.send(embed = player.history())
 
+@slash.slash(name = "status", 
+            description = "Get the latency of the bot.", 
+            options = [], 
+            guild_ids = guild_ids
+            )
 @client.command()
 async def status(ctx):
     r = requests.get("https://status.mojang.com/check")
@@ -165,17 +260,31 @@ async def status(ctx):
         embed.add_field(name=x, value=f":{y}_square:", inline=False)
     await ctx.send(embed=embed)
 
+@slash.slash(name = "clearcache", 
+            description = "Clear the bot cache.", 
+            options = [], 
+            guild_ids = guild_ids
+            )
 @client.command()
 async def clearcache(ctx):
     getPlayer.cache_clear()
     await ctx.send("Cache Cleared!")
 
+@slash.slash(name = "ping", 
+            description = "Get the latency of the bot.", 
+            options = [], 
+            guild_ids = guild_ids
+            )
 @client.command()
 async def ping(ctx):
     await ctx.send(f"Pong! in {round(client.latency * 1000)}ms")
 
+@slash.slash(name = "invite", 
+            description = "Get an invite link for the bot!", 
+            options = [], 
+            guild_ids = guild_ids)
 @client.command()
 async def invite(ctx):
-    await ctx.send("Here's the invite link: https://discord.com/api/oauth2/authorize?client_id=781349890944270366&permissions=19456&scope=bot")
+    await ctx.send("Here's the invite link: https://discord.com/api/oauth2/authorize?client_id=781349890944270366&permissions=2147503104&scope=bot%20applications.commands")
 
 client.run(token)
