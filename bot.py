@@ -107,8 +107,6 @@ intents = discord.Intents(messages = True, guilds = True, reactions = True, memb
 client = commands.AutoShardedBot(command_prefix = '.', intents = intents)
 slash = SlashCommand(client, sync_commands=True)
 
-guild_ids = [781112622820622357]
-
 missingEmbed = discord.Embed(title="Player Not Found", color=0xd50101)
 missingEmbed.set_author(name="Error")
 
@@ -116,8 +114,7 @@ client.remove_command('help')
 
 @slash.slash(name = "help", 
             description = "Get some help!", 
-            options = [], 
-            guild_ids = guild_ids
+            options = []
             )
 @client.command()
 async def help(ctx):
@@ -143,8 +140,7 @@ async def help(ctx):
                     option_type= 3,
                     required = True
                 )
-            ], 
-            guild_ids = guild_ids
+            ]
             )
 @client.command()
 async def profile(ctx, player:str):
@@ -191,8 +187,7 @@ async def profile(ctx, player:str):
                         )
                     ]
                 )
-            ], 
-            guild_ids = guild_ids
+            ]
             )
 @client.command()
 async def skin(ctx, player: str, skin_type: str = 'body'):
@@ -211,8 +206,7 @@ async def skin(ctx, player: str, skin_type: str = 'body'):
                     option_type= 3,
                     required = True
                 )
-            ], 
-            guild_ids = guild_ids
+            ]
             )
 @client.command()
 async def uuid(ctx, player: str):
@@ -232,8 +226,7 @@ async def uuid(ctx, player: str):
                     option_type= 3,
                     required = True
                 )
-            ], 
-            guild_ids = guild_ids
+            ]
             )
 @client.command()
 async def history(ctx, player: str):
@@ -245,8 +238,7 @@ async def history(ctx, player: str):
 
 @slash.slash(name = "status", 
             description = "Get the latency of the bot.", 
-            options = [], 
-            guild_ids = guild_ids
+            options = []
             )
 @client.command()
 async def status(ctx):
@@ -262,8 +254,7 @@ async def status(ctx):
 
 @slash.slash(name = "clearcache", 
             description = "Clear the bot cache.", 
-            options = [], 
-            guild_ids = guild_ids
+            options = []
             )
 @client.command()
 async def clearcache(ctx):
@@ -272,8 +263,7 @@ async def clearcache(ctx):
 
 @slash.slash(name = "ping", 
             description = "Get the latency of the bot.", 
-            options = [], 
-            guild_ids = guild_ids
+            options = []
             )
 @client.command()
 async def ping(ctx):
@@ -281,8 +271,8 @@ async def ping(ctx):
 
 @slash.slash(name = "invite", 
             description = "Get an invite link for the bot!", 
-            options = [], 
-            guild_ids = guild_ids)
+            options = [] 
+            )
 @client.command()
 async def invite(ctx):
     await ctx.send("Here's the invite link: https://discord.com/api/oauth2/authorize?client_id=781349890944270366&permissions=2147503104&scope=bot%20applications.commands")
