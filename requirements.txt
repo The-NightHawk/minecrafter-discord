@@ -1,4 +1,5 @@
 git+https://github.com/Rapptz/discord.py
+git+https://github.com/discord-py-slash-commands/discord-py-interactions
 aiohttp>=3.6.0,<3.8.0
 async-timeout>=3.0.1
 requests>=2.25.1
