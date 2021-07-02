@@ -80,7 +80,7 @@ class Player:
         embed=discord.Embed(title="", url=self.skinURL('head'))
         embed.set_image(url=self.skinURL('head'))
         embed.add_field(name="Player's Head", value="Use this command to get this head in Minecraft:", inline=False)
-        embed.add_field(name="Java Edition Only", value=f"`/give @p minecraft:player_head{{SkullOwner: {self.name}}}`", inline=False)
+        embed.add_field(name="Java Edition Only", value=f"`/give @p minecraft:player_head{{SkullOwner: \"{self.name}\"}}`", inline=False)
         return embed
 
 @lru_cache(maxsize=128)
