@@ -60,7 +60,7 @@ class Player:
     def skin(self, subURL: str = None):
         embed=discord.Embed(title=" ", url=self.skinURL(subURL), description=" ")
         embed.set_author(name=self.name, icon_url=self.skinURL('avatar'))
-        embed.set_image(url=self.skinURL(subURL))
+        embed.set_thumbnail(url=self.skinURL(subURL))
         return embed
 
     def id(self):
@@ -76,6 +76,12 @@ class Player:
         embed.add_field(name="\u200b", value='\n'.join([value for key,value in name_history.items()]), inline=True)
         return embed
 
+    def playerhead(self):
+        embed=discord.Embed(title="", url=self.skinURL('head'))
+        embed.set_image(url=self.skinURL('head'))
+        embed.add_field(name="Player's Head", value="Use this command to get this head in Minecraft:", inline=False)
+        embed.add_field(name="Java Edition Only", value=f"`/give @p minecraft:player_head{{SkullOwner: {self.name}}}`", inline=False)
+        return embed
 
 @lru_cache(maxsize=128)
 def getPlayer(player: str):
@@ -216,7 +222,6 @@ async def uuid(ctx, player: str):
         else:
             await ctx.send(embed = player.id())
 
-
 @slash.slash(name="history", 
             description="Get the name history of a player", 
             options = [
@@ -235,6 +240,25 @@ async def history(ctx, player: str):
             await ctx.send(embed = missingEmbed)
         else:
             await ctx.send(embed = player.history())
+
+@slash.slash(name="playerhead", 
+            description="Get the head of a player as a Minecraft item", 
+            options = [
+                create_option(
+                    name = "player",
+                    description = "The Name or UUID of the player",
+                    option_type= 3,
+                    required = True
+                )
+            ]
+            )
+@client.command()
+async def playerhead(ctx, player):
+        player = getPlayer(player)
+        if not player:
+            await ctx.send(embed = missingEmbed)
+        else:
+            await ctx.send(embed = player.playerhead())
 
 @slash.slash(name = "status", 
             description = "Get the latency of the bot.", 
