@@ -173,7 +173,7 @@ async def profile(ctx, player:str):
                     required = False,
                     choices = [
                         create_choice(
-                            name="body", 
+                            name="head", 
                             value = "head"
                         ), 
                         create_choice(
