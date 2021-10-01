@@ -5,7 +5,7 @@ app = Flask('')
 
 @app.route('/')
 def home():
-    return "This webpage serves to keep this bot alive"
+    return "Minecrafter is alive"
 
 def run():
   app.run(host='0.0.0.0',port=8080)
