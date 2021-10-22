@@ -63,7 +63,7 @@ class Embeds:
 
         return embed
 
-    # embed sent when using skin command
+    # embed sent when using skin, pose, and render commands
     @staticmethod
     async def skin(player, skin_url):
         name = player.name        
@@ -123,5 +123,11 @@ class Embeds:
     @staticmethod
     async def no_command(name):
         embed = Embed(title=f"{name} could not be found in the command list", color=0xed4245)
+        embed.set_author(name="Error")
+        return embed
+    
+    @staticmethod
+    async def no_pose(name):
+        embed = Embed(title=f"{name} is not a valid pose", color=0xed4245)
         embed.set_author(name="Error")
         return embed

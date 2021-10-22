@@ -111,30 +111,30 @@ class PlayerData(commands.Cog):
         description = "Get a player's UUID!",
         options = [
             create_option(
-                name = 'id',
+                name = 'player',
                 description = "The name or UUID of the player",
                 option_type = 3,
                 required = True
             )
         ]
     )
-    async def _uuid(self, ctx, id):
-        await self.uuid(ctx, id)
+    async def _uuid(self, ctx, player):
+        await self.uuid(ctx, player)
 
     @cog_ext.cog_slash(
         name = 'history',
         description = "Get a player's Name History!",
         options = [
             create_option(
-                name = 'id',
+                name = 'player',
                 description = "The name or UUID of the player",
                 option_type = 3,
                 required = True
             )
         ]
     )
-    async def _history(self, ctx, id):
-        await self.history(ctx, id)
+    async def _history(self, ctx, player):
+        await self.history(ctx, player)
 
 
     @cog_ext.cog_slash(
@@ -142,15 +142,15 @@ class PlayerData(commands.Cog):
             description = "Get a player's head as an item!",
             options = [
                 create_option(
-                    name = 'id',
+                    name = 'player',
                     description = "The name or UUID of the player",
                     option_type = 3,
                     required = True
                 )
             ]
         )
-    async def _playerhead(self, ctx, id):
-        await self.playerhead(ctx, id)
+    async def _playerhead(self, ctx, player):
+        await self.playerhead(ctx, player)
 
 
     @cog_ext.cog_slash(
@@ -158,7 +158,7 @@ class PlayerData(commands.Cog):
         description = "Get a player's skin!",
         options = [
             create_option(
-                name = 'id',
+                name = 'player',
                 description = "The name or UUID of the player",
                 option_type = 3,
                 required = True
@@ -177,8 +177,8 @@ class PlayerData(commands.Cog):
                 ])
         ]
     )
-    async def _skin(self, ctx, id: str, skin_type: str = 'body'):
-        await self.skin(ctx, id, skin_type)
+    async def _skin(self, ctx, player: str, skin_type: str = 'body'):
+        await self.skin(ctx, player, skin_type)
 
 
     @cog_ext.cog_slash(
@@ -186,15 +186,15 @@ class PlayerData(commands.Cog):
         description = "Get a player's [rofile!",
         options = [
             create_option(
-                name = 'id',
+                name = 'player',
                 description = "The name or UUID of the player",
                 option_type = 3,
                 required = True
             )
         ]
     )
-    async def _profile(self, ctx, id: str):
-        await self.profile(ctx, id)
+    async def _profile(self, ctx, player: str):
+        await self.profile(ctx, player)
 
 def setup(bot):
     bot.add_cog(PlayerData(bot))
