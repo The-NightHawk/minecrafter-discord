@@ -53,14 +53,15 @@ async def change_status():
     # change the status of the bot with a random option from statuses
     await bot.change_presence(activity=discord.Game(choice(statuses)))
 
-@tasks.loop(seconds=10)
+@tasks.loop(minutes=10)
 async def logger():
     global bot_uptime
-    uptime = timedelta(seconds=bot_uptime)
+    uptime = timedelta(minutes=bot_uptime)
     print(f"Bot Name: {bot.user}")
     print(f"Uptime: {str(uptime)}")
     print(f"Messages Received: {messages_received}")
-    print(f"Commands Processed: {commands_processed}\n")
+    print(f"Commands Processed: {commands_processed}")
+    print(f"Guilds: {len(bot.guilds)}\n")
     bot_uptime += 10
     
 @bot.event
@@ -88,7 +89,7 @@ async def on_ready():
     logger.start()
 
 # start flask keep_alive server
-#keep_alive()
+keep_alive()
 
 # get token and run bot
 token = environ.get('BOT_TOKEN')
