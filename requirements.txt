@@ -1,7 +1,0 @@
-discord.py>=1.6
-discord-py-slash-command>=2.2
-aiohttp>=3.6.0,<3.8.0
-async-timeout>=3.0.1
-requests>=2.25.1
-datetime>=4.3
-flask>=2.0.1
